@@ -111,7 +111,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=1
 Release=0
-Build=299
+Build=301
 Debug=0
 PreRelease=1
 Special=0
@@ -122,7 +122,7 @@ CodePage=1251
 [Version Info Keys]
 CompanyName=DK Software
 FileDescription=Oracle executable objects IDE
-FileVersion=3.1.0.299
+FileVersion=3.1.0.301
 InternalName=PackageEditor
 LegalCopyright=©1999-2006 Dmitry Kann
 LegalTrademarks=PackageEditor

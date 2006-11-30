@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: EdTS.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
+  $Id: EdTS.pas,v 1.3 2006-11-30 14:22:03 dale Exp $
 ****************************************************************}
 unit EdTS;
 
@@ -44,8 +44,6 @@ type
     procedure UnpackObjectName(out sOwner, sName: String);
      // Настраивает свойства SynEdit-а
     procedure UpdateSynEdit(SynEdit: TSynEdit);
-     // Позиционирует заданный редактор
-    procedure LocateSynEdit(SynEdit: TSynEdit; iLine, iCol: Integer; bSetFocus, bHilite: Boolean);
      // Снимает подсветку строки с редакторов
     procedure UnhiliteSynEds;
      // События редакторов
@@ -97,6 +95,8 @@ type
     procedure CheckDiskFileChange;
      // Должна активизировать [последний имевший фокус] редактор
     procedure EditorActivate;
+     // Позиционирует заданный редактор
+    procedure LocateSynEdit(SynEdit: TSynEdit; iLine, iCol: Integer; bSetFocus, bHilite: Boolean);
      // Props
      // -- True, если это страница, созданная автоматически при входе в программу
     property DefaultPage: Boolean read FDefaultPage;

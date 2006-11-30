@@ -141,6 +141,12 @@ object fMain: TfMain
         object iEditSearchAgain: TTBXItem
           Action = aEditSearchAgain
         end
+        object iEditGotoLineNumber: TTBXItem
+          Action = aEditGotoLineNumber
+          Hint = 
+            'Go to line number...|Enter a specific line number to scroll the ' +
+            'caret to'
+        end
         object iSepEditKeyMacroRecord: TTBXSeparatorItem
         end
         object iEditKeyMacroRecord: TTBXItem
@@ -739,6 +745,13 @@ object fMain: TfMain
       ImageIndex = 29
       ShortCut = 16496
       OnExecute = aaHelpAbout
+    end
+    object aEditGotoLineNumber: TAction
+      Category = 'Edit'
+      Caption = '&Go to line number...'
+      Hint = 'Go to line number...|Enter a line number to scroll the caret to'
+      ShortCut = 16455
+      OnExecute = aaEditGotoLineNumber
     end
     object aEditKeyMacroRecord: TAction
       Category = 'Edit'

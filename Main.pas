@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: Main.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
+  $Id: Main.pas,v 1.3 2006-11-30 14:22:03 dale Exp $
 ****************************************************************}
 unit Main;
 
@@ -156,6 +156,8 @@ type
     tbxsMain: TTBXSwitcher;
     tvNav: TVirtualStringTree;
     tvResults: TVirtualStringTree;
+    aEditGotoLineNumber: TAction;
+    iEditGotoLineNumber: TTBXItem;
     procedure aaEditCopy(Sender: TObject);
     procedure aaEditCut(Sender: TObject);
     procedure aaEditFind(Sender: TObject);
@@ -206,6 +208,7 @@ type
     procedure tvResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
     procedure tvResultsMeasureItem(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode; var NodeHeight: Integer);
     procedure tvResultsPaintText(Sender: TBaseVirtualTree; const TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType);
+    procedure aaEditGotoLineNumber(Sender: TObject);
   private
      // Поток для фоновой компиляции объектов
     FCompileThread: TCompileThread;
@@ -324,6 +327,14 @@ uses
   procedure TfMain.aaEditFind(Sender: TObject);
   begin
     if ShowSearchDlg(False, ActiveSynEd.SelAvail) then DoSearch(TxSrchOptions);
+  end;
+
+  procedure TfMain.aaEditGotoLineNumber(Sender: TObject);
+  var s: String;
+  begin
+    s := IntToStr(ActiveSynEd.CaretY);
+    if InputQuery('Go to line number', 'Line number:', s) then
+      ActiveEditor.LocateSynEdit(ActiveSynEd, StrToInt(s), 1, True, True);
   end;
 
   procedure TfMain.aaEditKeyMacroPause(Sender: TObject);
@@ -741,6 +752,7 @@ uses
     aEditFind.Enabled            := bOpenFiles and bSEActive;
     aEditReplace.Enabled         := bOpenFiles and bSEActive;
     aEditSearchAgain.Enabled     := bOpenFiles and bSEActive;
+    aEditGotoLineNumber.Enabled  := bOpenFiles and bSEActive;
     aEditKeyMacroRecord.Enabled  := bSEActive and (sms in [msStopped, msRecording]);
     aEditKeyMacroRecord.Checked  := sms=msRecording;
     aEditKeyMacroPause.Enabled   := sms in [msRecording, msPaused];
