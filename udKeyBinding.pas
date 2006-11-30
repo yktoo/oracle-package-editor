@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: udKeyBinding.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: udKeyBinding.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit udKeyBinding;
 
@@ -19,7 +19,6 @@ type
     lKey2: TLabel;
     eKey2: THotKey;
     procedure AdjustOKCancel(Sender: TObject);
-  private
   end;
 
   function EditKeyBinding(var sc1, sc2: TShortCut): Boolean;
@@ -42,6 +41,10 @@ implementation
         Free;
       end;
   end;
+
+   //===================================================================================================================
+   // TdKeyBinding
+   //===================================================================================================================
 
   procedure TdKeyBinding.AdjustOKCancel(Sender: TObject);
   begin

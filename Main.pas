@@ -1,46 +1,48 @@
 {****************************************************************
-  $Id: Main.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: Main.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit Main;
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, EdTS, SynEdit, SynEditTypes, XPMan, ConsVarsTypes,
-  VirtualTrees, SynEditRegexSearch, SynEditMiscClasses, SynEditSearch,
-  TBXSwitcher, SynEditPlugins, SynMacroRecorder, Menus, TB2Item, TBX,
-  TB2MRU, TBXExtItems, ImgList, DB, MemDS, DBAccess, Ora,
-  SynEditHighlighter, SynHighlighterSQL, ActnList, TBXStatusBars,
-  TBXDkPanels, TB2ExtItems, TB2Dock, TB2Toolbar, ComCtrls;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, Registry, SynEdit, SynEditTypes, EdTS,
+  ConsVarsTypes,
+  SynEditRegexSearch, SynEditMiscClasses, SynEditSearch, TBXSwitcher,
+  SynEditPlugins, SynMacroRecorder, Menus, TB2Item, TBX, TB2MRU,
+  TBXExtItems, ImgList, DB, MemDS, DBAccess, Ora, SynEditHighlighter,
+  SynHighlighterSQL, ActnList, TBXStatusBars, VirtualTrees, TBXDkPanels,
+  TB2ExtItems, TB2Dock, TB2Toolbar, ComCtrls;
 
 type
   TfMain = class(TForm, ISourceEditorNavigation, ICompileSource)
-    aAbout: TAction;
-    aCloseFile: TAction;
-    aCompile: TAction;
-    aConnect: TAction;
-    aCopy: TAction;
-    aCut: TAction;
-    aDisconnect: TAction;
-    aDropObject: TAction;
-    aExit: TAction;
-    aFind: TAction;
+    aEditCopy: TAction;
+    aEditCut: TAction;
+    aEditFind: TAction;
+    aEditKeyMacroPause: TAction;
+    aEditKeyMacroPlay: TAction;
+    aEditKeyMacroRecord: TAction;
+    aEditPaste: TAction;
+    aEditRedo: TAction;
+    aEditReplace: TAction;
+    aEditSearchAgain: TAction;
+    aEditUndo: TAction;
+    aFileConnect: TAction;
+    aFileDisconnect: TAction;
+    aFileExit: TAction;
+    aFileOpen: TAction;
+    aFileSave: TAction;
+    aFileSaveAs: TAction;
+    aHelpAbout: TAction;
     aHelpContents: TAction;
-    aKeyMacroPause: TAction;
-    aKeyMacroPlay: TAction;
-    aKeyMacroRecord: TAction;
     alMain: TActionList;
-    aOpen: TAction;
-    aPaste: TAction;
-    aPreferences: TAction;
-    aRedo: TAction;
-    aRefreshStatus: TAction;
-    aReplace: TAction;
-    aRetrieveObject: TAction;
-    aSave: TAction;
-    aSaveAs: TAction;
-    aSearchAgain: TAction;
-    aUndo: TAction;
+    aObjectCompile: TAction;
+    aObjectDrop: TAction;
+    aObjectRefreshStatus: TAction;
+    aObjectRetrieve: TAction;
+    aViewPreferences: TAction;
+    aWindowClose: TAction;
+    aWindowCloseAll: TAction;
     bCompile: TTBXItem;
     bConnect: TTBXItem;
     bCopy: TTBXItem;
@@ -69,59 +71,58 @@ type
     dpNav: TTBXDockablePanel;
     dpResults: TTBXDockablePanel;
     eObjName: TTBXEditItem;
-    iAbout: TTBXItem;
-    iCloseFile: TTBXItem;
-    iCompile: TTBXItem;
-    iConnect: TTBXItem;
-    iCopy: TTBXItem;
-    iCut: TTBXItem;
-    iDisconnect: TTBXItem;
-    iDropObject: TTBXItem;
-    iEditSep1: TTBXSeparatorItem;
-    iEditSep2: TTBXSeparatorItem;
-    iEditSep3: TTBXSeparatorItem;
-    iExit: TTBXItem;
+    giWindowList: TTBGroupItem;
+    iEditCopy: TTBXItem;
+    iEditCut: TTBXItem;
+    iEditFind: TTBXItem;
+    iEditKeyMacroPause: TTBXItem;
+    iEditKeyMacroPlay: TTBXItem;
+    iEditKeyMacroRecord: TTBXItem;
+    iEditPaste: TTBXItem;
+    iEditRedo: TTBXItem;
+    iEditReplace: TTBXItem;
+    iEditSearchAgain: TTBXItem;
+    iEditUndo: TTBXItem;
+    iFileConnect: TTBXItem;
+    iFileDisconnect: TTBXItem;
+    iFileExit: TTBXItem;
     iFileMRU: TTBXMRUListItem;
     iFileNewFunction: TTBXItem;
     iFileNewPackage: TTBXItem;
     iFileNewProcedure: TTBXItem;
-    iFileSep1: TTBXSeparatorItem;
-    iFileSep2: TTBXSeparatorItem;
-    iFileSep3: TTBXSeparatorItem;
-    iFind: TTBXItem;
+    iFileOpen: TTBXItem;
+    iFileSave: TTBXItem;
+    iFileSaveAs: TTBXItem;
+    iHelpAbout: TTBXItem;
     iHelpContents: TTBXItem;
-    iKeyMacroPause: TTBXItem;
-    iKeyMacroPlay: TTBXItem;
-    iKeyMacroRecord: TTBXItem;
     ilMain: TTBImageList;
-    iObjectSep1: TTBXSeparatorItem;
-    iOpen: TTBXItem;
+    iObjectCompile: TTBXItem;
+    iObjectDrop: TTBXItem;
+    iObjectRefreshStatus: TTBXItem;
+    iObjectRetrieve: TTBXItem;
     iOpenMRU: TTBXMRUListItem;
-    iPaste: TTBXItem;
-    ipmTabCloseFile: TTBXItem;
-    ipmTabDropObject: TTBXItem;
-    ipmTabRetrieveObject: TTBXItem;
-    ipmTabSep1: TTBXSeparatorItem;
-    ipmTabSep2: TTBXSeparatorItem;
-    iPreferences: TTBXItem;
-    iRedo: TTBXItem;
-    iRefreshStatus: TTBXItem;
-    iReplace: TTBXItem;
-    iRetrieveObject: TTBXItem;
-    iSave: TTBXItem;
-    iSaveAs: TTBXItem;
-    iSearchAgain: TTBXItem;
+    ipmTabWindowClose: TTBXItem;
+    iSepEditCut: TTBXSeparatorItem;
+    iSepEditFind: TTBXSeparatorItem;
+    iSepEditKeyMacroRecord: TTBXSeparatorItem;
+    iSepFileDisconnect: TTBXSeparatorItem;
+    iSepFileExit: TTBXSeparatorItem;
+    iSepFileMRU: TTBXSeparatorItem;
+    iSepObjectRetrieve: TTBXSeparatorItem;
+    iSepViewPreferences: TTBXSeparatorItem;
+    iSepWindowList: TTBXSeparatorItem;
     iSetObjFunction: TTBItem;
     iSetObjPackage: TTBItem;
     iSetObjProcedure: TTBItem;
-    iToggleGeneral: TTBVisibilityToggleItem;
-    iToggleMacro: TTBVisibilityToggleItem;
-    iToggleNavList: TTBVisibilityToggleItem;
-    iToggleObjProps: TTBVisibilityToggleItem;
-    iToggleResults: TTBVisibilityToggleItem;
-    iToggleStatusBar: TTBVisibilityToggleItem;
-    iUndo: TTBXItem;
-    iVewSep: TTBXSeparatorItem;
+    iViewPreferences: TTBXItem;
+    iViewToggleGeneralToolbar: TTBVisibilityToggleItem;
+    iViewToggleMacroToolbar: TTBVisibilityToggleItem;
+    iViewToggleNavList: TTBVisibilityToggleItem;
+    iViewToggleObjPropsToolbar: TTBVisibilityToggleItem;
+    iViewToggleResults: TTBVisibilityToggleItem;
+    iViewToggleStatusBar: TTBVisibilityToggleItem;
+    iWindowClose: TTBXItem;
+    iWindowCloseAll: TTBXItem;
     osMain: TOraSession;
     pcMain: TPageControl;
     pmTabs: TTBXPopupMenu;
@@ -138,8 +139,8 @@ type
     smObject: TTBXSubmenuItem;
     smrMain: TSynMacroRecorder;
     smView: TTBXSubmenuItem;
+    smWindow: TTBXSubmenuItem;
     tbgiObjName: TTBGroupItem;
-    tbgiTabObjName: TTBGroupItem;
     tbMacro: TTBXToolbar;
     tbMain: TTBXToolbar;
     tbMenu: TTBXToolbar;
@@ -155,37 +156,38 @@ type
     tbxsMain: TTBXSwitcher;
     tvNav: TVirtualStringTree;
     tvResults: TVirtualStringTree;
-    procedure aaAbout(Sender: TObject);
-    procedure aaCloseFile(Sender: TObject);
-    procedure aaCompile(Sender: TObject);
-    procedure aaConnect(Sender: TObject);
-    procedure aaCopy(Sender: TObject);
-    procedure aaCut(Sender: TObject);
-    procedure aaDisconnect(Sender: TObject);
-    procedure aaDropObject(Sender: TObject);
-    procedure aaExit(Sender: TObject);
-    procedure aaFind(Sender: TObject);
+    procedure aaEditCopy(Sender: TObject);
+    procedure aaEditCut(Sender: TObject);
+    procedure aaEditFind(Sender: TObject);
+    procedure aaEditKeyMacroPause(Sender: TObject);
+    procedure aaEditKeyMacroPlay(Sender: TObject);
+    procedure aaEditKeyMacroRecord(Sender: TObject);
+    procedure aaEditPaste(Sender: TObject);
+    procedure aaEditRedo(Sender: TObject);
+    procedure aaEditReplace(Sender: TObject);
+    procedure aaEditSearchAgain(Sender: TObject);
+    procedure aaEditUndo(Sender: TObject);
+    procedure aaFileConnect(Sender: TObject);
+    procedure aaFileDisconnect(Sender: TObject);
+    procedure aaFileExit(Sender: TObject);
+    procedure aaFileOpen(Sender: TObject);
+    procedure aaFileSave(Sender: TObject);
+    procedure aaFileSaveAs(Sender: TObject);
+    procedure aaHelpAbout(Sender: TObject);
     procedure aaHelpContents(Sender: TObject);
-    procedure aaKeyMacroPause(Sender: TObject);
-    procedure aaKeyMacroPlay(Sender: TObject);
-    procedure aaKeyMacroRecord(Sender: TObject);
-    procedure aaOpen(Sender: TObject);
-    procedure aaPaste(Sender: TObject);
-    procedure aaPreferences(Sender: TObject);
-    procedure aaRedo(Sender: TObject);
-    procedure aaRefreshStatus(Sender: TObject);
-    procedure aaReplace(Sender: TObject);
-    procedure aaRetrieveObject(Sender: TObject);
-    procedure aaSave(Sender: TObject);
-    procedure aaSaveAs(Sender: TObject);
-    procedure aaSearchAgain(Sender: TObject);
-    procedure aaUndo(Sender: TObject);
+    procedure aaObjectCompile(Sender: TObject);
+    procedure aaObjectDrop(Sender: TObject);
+    procedure aaObjectRefreshStatus(Sender: TObject);
+    procedure aaObjectRetrieve(Sender: TObject);
+    procedure aaViewPreferences(Sender: TObject);
+    procedure aaWindowClose(Sender: TObject);
+    procedure aaWindowCloseAll(Sender: TObject);
     procedure eObjNameAcceptText(Sender: TObject; var NewText: String; var Accept: Boolean);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
+    procedure NewObjectClick(Sender: TObject);
     procedure pcMainChange(Sender: TObject);
     procedure pcMainChanging(Sender: TObject; var AllowChange: Boolean);
+    procedure pcMainMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure sbarMainPanelDblClick(Sender: TTBXCustomStatusBar; Panel: TTBXStatusPanel);
     procedure SetObjectTypeClick(Sender: TObject);
     procedure smrMainStateChange(Sender: TObject);
@@ -204,12 +206,9 @@ type
     procedure tvResultsInitNode(Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
     procedure tvResultsMeasureItem(Sender: TBaseVirtualTree; TargetCanvas: TCanvas; Node: PVirtualNode; var NodeHeight: Integer);
     procedure tvResultsPaintText(Sender: TBaseVirtualTree; const TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType);
-    procedure zzNewObject(Sender: TObject);
   private
      // Поток для фоновой компиляции объектов
     FCompileThread: TCompileThread;
-     // Флаг того, что окончена загрузка GUID ключей HKCR\CLSID [защита]
-    FGUIDsLoaded: Boolean;
      // Prop storage
     FCompilingEditor: TEditorTabSheet;
     FScanThread: TSourceScanThread;
@@ -217,7 +216,6 @@ type
     function  NewObject(co: TCodeObjType): TEditorTabSheet;
     function  ActiveSynEd: TSynEdit;
     procedure UpdateStatusbar;
-    procedure UpdateCaption;
     procedure UpdateStatusList;
     procedure DisconnectFromServer;
     procedure ConnectToServer(bAskParams: Boolean);
@@ -225,12 +223,6 @@ type
     procedure AppHint(Sender: TObject);
     procedure AppActivate(Sender: TObject);
     function  DoLoad(const sFName: TFileName): TEditorTabSheet;
-    procedure CMFocusChanged(var Msg: TMessage); message CM_FOCUSCHANGED;
-    procedure WMUpdateCaption(var Msg: TMessage); message WM_UPDATECAPTION;
-    procedure WMEnableActions(var Msg: TMessage); message WM_ENABLEACTIONS;
-    procedure WMUpdateTabNames(var Msg: TMessage); message WM_UPDATETABNAMES;
-    procedure WMUpdateStatusList(var Msg: TMessage); message WM_UPDATESTATUSLIST;
-    procedure WMTimer(var Msg: TWMTimer); message WM_TIMER;
     procedure UpdateSynEditStyles;
      // Updates actions' availability
     procedure EnableActions;
@@ -245,6 +237,12 @@ type
     procedure LocateCurrentResults;
      // Настраивает Навигатор согласно текущим установкам
     procedure UpdateNavStyles;
+     // Настраивает вкладки согласно текущим установкам
+    procedure UpdateTabStyles;
+     // Событие клика на пункте выбора окна (меню Window)
+    procedure WindowItemClick(Sender: TObject);
+     // Отрабатывает изменение текущего активного редактора
+    procedure ActiveEditorChanged;
      // ISourceEditorNavigation
     procedure EdNav_GetSource(var sMainSource, sBodySource: String);
     procedure EdNav_SetResultList(NavList: TNavList);
@@ -259,19 +257,37 @@ type
     procedure ICompileSource.GetSource      = CmpSrc_GetSource;
     procedure ICompileSource.AddResultEntry = CmpSrc_AddResultEntry;
     procedure ICompileSource.Complete       = CmpSrc_Complete;
+     // Message handlers
+    procedure CMFocusChanged(var Msg: TMessage); message CM_FOCUSCHANGED;
+    procedure WMEditorStatusChanged(var Msg: TMessage); message WM_EditorStatusChanged;
+    procedure WMUpdateStatusList(var Msg: TMessage); message WM_UpdateStatusList;
+    procedure WMWindowListChanged(var Msg: TMessage); message WM_WindowListChanged;
+    procedure WMActiveWindowChanged(var Msg: TMessage); message WM_ActiveWindowChanged;    
      // Prop handlers
+    function  GetActiveEditor: TEditorTabSheet;
     function  GetObjectType: TCodeObjType;
+    procedure SetActiveEditor(Value: TEditorTabSheet);
+    procedure SetCompilingEditor(Value: TEditorTabSheet);
     procedure SetObjectType(Value: TCodeObjType);
-    procedure SetCompilingEditor(const Value: TEditorTabSheet);
+  protected
+    procedure DoCreate; override;
+    procedure DoDestroy; override;
+    procedure DoShow; override;
   public
     function  OpenSQL(const sSQL: String; const aParams: Array of const): TOraQuery;
     procedure ParseFile(out co: TCodeObjType; const sFileName: String; out sObjName, sMain, sBody: String; out dtFile: TDateTime);
-    function  ActiveEditor: TEditorTabSheet;
      // Создаёт новый редактор
     function  NewEditor(co: TCodeObjType; bIsDefaultPage: Boolean; const sFileName, sObjName, sText, sBodyText: String; const dtFileDate: TDateTime): TEditorTabSheet;
      // Обновляет текст в панели статуса, ответственной за позицию курсора
     procedure UpdateCaretText;
+     // Открывает файлы из списка 
+    procedure OpenFilesFromList(AFiles: TStrings);
+     // Вызов сообщений
+    procedure PostWindowListChanged;
+    procedure PostActiveWindowChanged;
      // Props
+     // -- Текущий активный редактор
+    property ActiveEditor: TEditorTabSheet read GetActiveEditor write SetActiveEditor;
      // -- Объект, компилируемый на сервере. nil, если в данный момент нет компилируемого объекта
     property CompilingEditor: TEditorTabSheet read FCompilingEditor write SetCompilingEditor;
      // -- Тип текущего редактируемого объекта
@@ -287,86 +303,40 @@ var
 implementation
 {$R *.DFM}
 uses
-  ClipBrd, RxStrUtils, udPreferences, udConnect, udAbout, Registry, udSearch, CommCtrl, udRetrieveObject,
-  SynEditKeyCmds, TBXOfficeXPTheme, TBXStripesTheme, Math, uProtect;
+  Math, ClipBrd, CommCtrl, XPMan,
+  RxStrUtils, SynEditKeyCmds, TBXOfficeXPTheme, TBXStripesTheme,
+  udPreferences, udConnect, udAbout, udSearch, udRetrieveObject;
 
    //===================================================================================================================
    // TfMain
    //===================================================================================================================
 
-  procedure TfMain.aaAbout(Sender: TObject);
-  begin
-    ShowAbout(True);
-  end;
-
-  procedure TfMain.aaCloseFile(Sender: TObject);
-  begin
-    if ActiveEditor.CheckSave then begin
-      ActiveEditor.Free;
-      Perform(WM_UPDATETABNAMES, 0, 0);
-    end;
-    pcMainChange(nil);
-  end;
-
-  procedure TfMain.aaCompile(Sender: TObject);
-  begin
-    ActiveEditor.Execute;
-  end;
-
-  procedure TfMain.aaConnect(Sender: TObject);
-  begin
-    ConnectToServer(True);
-    SetStatusInfo('');
-  end;
-
-  procedure TfMain.aaCopy(Sender: TObject);
+  procedure TfMain.aaEditCopy(Sender: TObject);
   begin
     ActiveSynEd.CopyToClipboard;
   end;
 
-  procedure TfMain.aaCut(Sender: TObject);
+  procedure TfMain.aaEditCut(Sender: TObject);
   begin
     ActiveSynEd.CutToClipboard;
   end;
 
-  procedure TfMain.aaDisconnect(Sender: TObject);
-  begin
-    DisconnectFromServer;
-    SetStatusInfo('');
-  end;
-
-  procedure TfMain.aaDropObject(Sender: TObject);
-  begin
-    with ActiveEditor do
-      if MessageBox(Self.Handle, PChar(Format(SMsgConfirm_DropObject, [GetObjName])), PChar(SDlgTitle_Confirm), MB_OKCANCEL or MB_ICONEXCLAMATION)=IDOK then DropObject;
-  end;
-
-  procedure TfMain.aaExit(Sender: TObject);
-  begin
-    Close;
-  end;
-
-  procedure TfMain.aaFind(Sender: TObject);
+  procedure TfMain.aaEditFind(Sender: TObject);
   begin
     if ShowSearchDlg(False, ActiveSynEd.SelAvail) then DoSearch(TxSrchOptions);
   end;
 
-  procedure TfMain.aaHelpContents(Sender: TObject);
-  begin
-    Application.HelpCommand(HELP_FINDER, 0);
-  end;
-
-  procedure TfMain.aaKeyMacroPause(Sender: TObject);
+  procedure TfMain.aaEditKeyMacroPause(Sender: TObject);
   begin
     smrMain.Pause;
   end;
 
-  procedure TfMain.aaKeyMacroPlay(Sender: TObject);
+  procedure TfMain.aaEditKeyMacroPlay(Sender: TObject);
   begin
     if ActiveControl is TSynEdit then smrMain.PlaybackMacro(TSynEdit(ActiveControl));
   end;
 
-  procedure TfMain.aaKeyMacroRecord(Sender: TObject);
+  procedure TfMain.aaEditKeyMacroRecord(Sender: TObject);
   begin
     if ActiveControl is TSynEdit then
       with smrMain do
@@ -376,44 +346,17 @@ uses
         end;
   end;
 
-  procedure TfMain.aaOpen(Sender: TObject);
-  begin
-    with TOpenDialog.Create(Self) do
-      try
-        DefaultExt := SDefaultFileExt;
-        Filter     := SDefaultFileFilter;
-        Options    := [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing];
-        Title      := SDlgTitle_OpenFile;
-        if Execute then DoLoad(FileName);
-      finally
-        Free;
-      end;
-  end;
-
-  procedure TfMain.aaPaste(Sender: TObject);
+  procedure TfMain.aaEditPaste(Sender: TObject);
   begin
     ActiveSynEd.PasteFromClipboard;
   end;
 
-  procedure TfMain.aaPreferences(Sender: TObject);
-  begin
-    if EditPreferences then begin
-      UpdateSynEditStyles;
-      UpdateNavStyles;
-    end;
-  end;
-
-  procedure TfMain.aaRedo(Sender: TObject);
+  procedure TfMain.aaEditRedo(Sender: TObject);
   begin
     ActiveSynEd.Redo;
   end;
 
-  procedure TfMain.aaRefreshStatus(Sender: TObject);
-  begin
-    ActiveEditor.LoadResults(True);
-  end;
-
-  procedure TfMain.aaReplace(Sender: TObject);
+  procedure TfMain.aaEditReplace(Sender: TObject);
   var i: Integer;
   begin
     if ShowSearchDlg(True, ActiveSynEd.SelAvail) then begin
@@ -423,34 +366,133 @@ uses
     end;
   end;
 
-  procedure TfMain.aaRetrieveObject(Sender: TObject);
+  procedure TfMain.aaEditSearchAgain(Sender: TObject);
   begin
-    RetrieveObject;
+    if sTxSearch='' then aEditFind.Execute else DoSearch(TxSrchOptions-[ssoEntireScope, ssoSelectedOnly, ssoReplace]);
   end;
 
-  procedure TfMain.aaSave(Sender: TObject);
-  begin
-    ActiveEditor.SaveObject;
-  end;
-
-  procedure TfMain.aaSaveAs(Sender: TObject);
-  begin
-    ActiveEditor.SaveObjectAs;
-  end;
-
-  procedure TfMain.aaSearchAgain(Sender: TObject);
-  begin
-    if sTxSearch='' then aFind.Execute else DoSearch(TxSrchOptions-[ssoEntireScope, ssoSelectedOnly, ssoReplace]);
-  end;
-
-  procedure TfMain.aaUndo(Sender: TObject);
+  procedure TfMain.aaEditUndo(Sender: TObject);
   begin
     ActiveSynEd.Undo;
   end;
 
-  function TfMain.ActiveEditor: TEditorTabSheet;
+  procedure TfMain.aaFileConnect(Sender: TObject);
   begin
-    Result := TEditorTabSheet(pcMain.ActivePage);
+    ConnectToServer(True);
+    SetStatusInfo('');
+  end;
+
+  procedure TfMain.aaFileDisconnect(Sender: TObject);
+  begin
+    DisconnectFromServer;
+    SetStatusInfo('');
+  end;
+
+  procedure TfMain.aaFileExit(Sender: TObject);
+  begin
+    Close;
+  end;
+
+  procedure TfMain.aaFileOpen(Sender: TObject);
+  begin
+    with TOpenDialog.Create(Self) do
+      try
+        DefaultExt := SDefaultFileExt;
+        Filter     := SDefaultFileFilter;
+        Options    := [ofAllowMultiSelect, ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing];
+        Title      := SDlgTitle_OpenFile;
+        if Execute then OpenFilesFromList(Files);
+      finally
+        Free;
+      end;
+  end;
+
+  procedure TfMain.aaFileSave(Sender: TObject);
+  begin
+    ActiveEditor.SaveObject;
+  end;
+
+  procedure TfMain.aaFileSaveAs(Sender: TObject);
+  begin
+    ActiveEditor.SaveObjectAs;
+  end;
+
+  procedure TfMain.aaHelpAbout(Sender: TObject);
+  begin
+    ShowAbout(True);
+  end;
+
+  procedure TfMain.aaHelpContents(Sender: TObject);
+  begin
+    Application.MessageBox('Help currently is not available.', 'Error', MB_ICONERROR or MB_OK);
+  end;
+
+  procedure TfMain.aaObjectCompile(Sender: TObject);
+  begin
+    ActiveEditor.Execute;
+  end;
+
+  procedure TfMain.aaObjectDrop(Sender: TObject);
+  begin
+    with ActiveEditor do
+      if MessageBox(Self.Handle, PChar(Format(SMsgConfirm_DropObject, [GetObjName])), PChar(SDlgTitle_Confirm), MB_OKCANCEL or MB_ICONEXCLAMATION)=IDOK then DropObject;
+  end;
+
+  procedure TfMain.aaObjectRefreshStatus(Sender: TObject);
+  begin
+    ActiveEditor.LoadResults(True);
+  end;
+
+  procedure TfMain.aaObjectRetrieve(Sender: TObject);
+  begin
+    RetrieveObject;
+  end;
+
+  procedure TfMain.aaViewPreferences(Sender: TObject);
+  begin
+    if EditPreferences then begin
+      UpdateSynEditStyles;
+      UpdateNavStyles;
+      UpdateTabStyles;
+    end;
+  end;
+
+  procedure TfMain.aaWindowClose(Sender: TObject);
+  begin
+    if ActiveEditor.CheckSave then begin
+      ActiveEditor.Free;
+      ActiveEditorChanged;
+      PostWindowListChanged;
+    end;
+  end;
+
+  procedure TfMain.aaWindowCloseAll(Sender: TObject);
+  var i: Integer;
+  begin
+    for i := pcMain.PageCount-1 downto 0 do pcMain.Pages[i].Free;
+    ActiveEditorChanged;
+    PostWindowListChanged;
+  end;
+
+  procedure TfMain.ActiveEditorChanged;
+  var ets: TEditorTabSheet;
+  begin
+    pcMain.Visible := pcMain.PageCount>0;
+    EnableActions;
+    ets := ActiveEditor;
+    if ets<>nil then begin
+      ObjectType    := ets.ObjType;
+      eObjName.Text := ets.ObjectName;
+      ets.EditorActivate;
+    end;
+    UpdateStatusList;
+     // Пишем сообщение 'Scanning source...' в tvNav
+    tvNav.Clear;
+    tvNav.AddChild(nil);
+     // Запускаем сканирующий поток
+    FScanThread.SetModified(10);
+    PostActiveWindowChanged;
+    bChangingPages := False;
   end;
 
   function TfMain.ActiveSynEd: TSynEdit;
@@ -543,13 +585,54 @@ uses
     UpdateStatusbar;
   end;
 
+  procedure TfMain.DoCreate;
+  begin
+    inherited DoCreate;
+    try
+       // Загружаем SQL-курсор
+      Screen.Cursors[crSQLWait] := LoadCursor(HInstance, 'CUR_SQLWAIT');
+       // Настраиваем Application
+      Application.OnHint     := AppHint;
+      Application.OnActivate := AppActivate;
+       // Инициализируем tvNav
+      tvNav.NodeDataSize := SizeOf(TNavRecord);
+       // Создаём поток сканирования исходников
+      FScanThread := TSourceScanThread.Create(Self);
+       // Создаём поток компиляции
+      FCompileThread := TCompileThread.Create(Self);
+      LoadSettings;
+    finally
+      SetStatusInfo('');
+    end;
+  end;
+
+  procedure TfMain.DoDestroy;
+  begin
+    SaveSettings;
+    FScanThread.Shutdown;
+    FCompileThread.Shutdown;
+    fMain := nil;
+    inherited DoDestroy;
+  end;
+
   function TfMain.DoLoad(const sFName: TFileName): TEditorTabSheet;
   var
+    i: Integer;
     sMain, sBody, sObjName: String;
     co: TCodeObjType;
     dt: TDateTime;
   begin
+     // Ищем такой файл среди открытых
+    for i := 0 to pcMain.PageCount-1 do begin
+      Result := TEditorTabSheet(pcMain.Pages[i]);
+      if SameFileName(Result.FileName, sFName) then begin
+        ActiveEditor := Result;
+        Exit;
+      end;
+    end;
+     // Если не нашли - разбираем файл
     ParseFile(co, sFName, sObjName, sMain, sBody, dt);
+     // Создаём новый редактор
     Result := NewEditor(co, False, sFName, sObjName, sMain, sBody, dt);
   end;
 
@@ -557,6 +640,13 @@ uses
   begin
     ActiveSynEd.SearchEngine := TSynEditSearchCustom(iif(bRegexSearch, seRegexSearch, seSearch));
     if ActiveSynEd.SearchReplace(sTxSearch, '', SrchOpts)=0 then Info(Format(SMsg_SearchStringNotFound, [sTxSearch]));
+  end;
+
+  procedure TfMain.DoShow;
+  begin
+    inherited DoShow;
+    ActiveEditorChanged;
+    PostWindowListChanged;
   end;
 
   procedure TfMain.EdNav_GetSource(var sMainSource, sBodySource: String);
@@ -607,32 +697,28 @@ uses
 
   procedure TfMain.EnableActions;
   var
-    bConn, bNotCompiling, bOpenFiles, bObjDef, bModified, bSEActive, bHasSel, bCanUndo, bCanRedo, bCanPaste, bCanCompile: Boolean;
+    bConnected, bNotCompiling, bOpenFiles, bObjDef, bModified, bSEActive, bHasSel, bCanUndo, bCanRedo, bCanPaste, bCanCompile: Boolean;
     ets: TEditorTabSheet;
     se: TSynEdit;
     sms: TSynMacroState;
   begin
-     // Check connection
-    bConn := osMain.Connected;
-    aConnect.Enabled := not bConn;
-    aDisconnect.Enabled := bConn;
-    bNotCompiling := FCompilingEditor=nil;
-     // Check open files
     ets := ActiveEditor;
-    bOpenFiles  := ets<>nil;
-    bModified   := False;
-    bCanPaste   := False;
-    bHasSel     := False;
-    bCanUndo    := False;
-    bCanRedo    := False;
-    bObjDef     := False;
-    bCanCompile := False;
-    bSEActive   := ActiveControl is TSynEdit;
+    bConnected         := osMain.Connected;
+    bNotCompiling := FCompilingEditor=nil;
+    bOpenFiles    := ets<>nil;
+    bModified     := False;
+    bCanPaste     := False;
+    bHasSel       := False;
+    bCanUndo      := False;
+    bCanRedo      := False;
+    bObjDef       := False;
+    bCanCompile   := False;
+    bSEActive     := ActiveControl is TSynEdit;
     sms := smrMain.State;
     if bOpenFiles then begin
       bModified := ets.Modified;
-      bObjDef := (eObjName.Text<>'') and bConn;
-      bCanCompile := (ets.SynEdMain.Lines.Count>0) and bConn;
+      bObjDef := (eObjName.Text<>'') and bConnected;
+      bCanCompile := (ets.SynEdMain.Lines.Count>0) and bConnected;
       if bSEActive then begin
         se := TSynEdit(ActiveControl);
         bHasSel   := se.SelAvail;
@@ -641,26 +727,32 @@ uses
         bCanPaste := Clipboard.HasFormat(CF_TEXT);
       end;
     end;
-    aSave.Enabled           := bModified;
-    aSaveAs.Enabled         := bOpenFiles;
-    aCloseFile.Enabled      := bNotCompiling and bOpenFiles;
-    aDisconnect.Enabled     := bNotCompiling;
-    aConnect.Enabled        := bNotCompiling;
-    aUndo.Enabled           := bCanUndo;
-    aRedo.Enabled           := bCanRedo;
-    aCut.Enabled            := bHasSel;
-    aCopy.Enabled           := bHasSel;
-    aPaste.Enabled          := bCanPaste;
-    aFind.Enabled           := bOpenFiles and bSEActive;
-    aReplace.Enabled        := bOpenFiles and bSEActive;
-    aSearchAgain.Enabled    := bOpenFiles and bSEActive;
-    aKeyMacroRecord.Enabled := bSEActive and (sms in [msStopped, msRecording]);
-    aKeyMacroRecord.Checked := sms=msRecording;
-    aKeyMacroPause.Enabled  := sms in [msRecording, msPaused];
-    aKeyMacroPlay.Enabled   := bSEActive and (sms=msStopped) and (smrMain.EventCount>0);
-    aCompile.Enabled        := bNotCompiling and bCanCompile;
-    aRefreshStatus.Enabled  := bNotCompiling and bObjDef;
-    aDropObject.Enabled     := bNotCompiling and bObjDef;
+     // File
+    aFileSave.Enabled            := bModified;
+    aFileSaveAs.Enabled          := bOpenFiles;
+    aFileDisconnect.Enabled      := bConnected and bNotCompiling;
+    aFileConnect.Enabled         := not bConnected and bNotCompiling;
+     // Edit
+    aEditUndo.Enabled            := bCanUndo;
+    aEditRedo.Enabled            := bCanRedo;
+    aEditCut.Enabled             := bHasSel;
+    aEditCopy.Enabled            := bHasSel;
+    aEditPaste.Enabled           := bCanPaste;
+    aEditFind.Enabled            := bOpenFiles and bSEActive;
+    aEditReplace.Enabled         := bOpenFiles and bSEActive;
+    aEditSearchAgain.Enabled     := bOpenFiles and bSEActive;
+    aEditKeyMacroRecord.Enabled  := bSEActive and (sms in [msStopped, msRecording]);
+    aEditKeyMacroRecord.Checked  := sms=msRecording;
+    aEditKeyMacroPause.Enabled   := sms in [msRecording, msPaused];
+    aEditKeyMacroPlay.Enabled    := bSEActive and (sms=msStopped) and (smrMain.EventCount>0);
+     // Window
+    aWindowClose.Enabled         := bNotCompiling and bOpenFiles;
+    aWindowCloseAll.Enabled      := bNotCompiling and bOpenFiles;
+     // Object
+    aObjectCompile.Enabled       := bNotCompiling and bCanCompile;
+    aObjectRefreshStatus.Enabled := bNotCompiling and bObjDef;
+    aObjectDrop.Enabled          := bNotCompiling and bObjDef;
+    aObjectRetrieve.Enabled      := bNotCompiling and bConnected;
   end;
 
   procedure TfMain.eObjNameAcceptText(Sender: TObject; var NewText: String; var Accept: Boolean);
@@ -675,38 +767,13 @@ uses
     for i := 0 to pcMain.PageCount-1 do
       if not TEditorTabSheet(pcMain.Pages[i]).CheckSave then begin
         CanClose := False;
-        Exit;
+        Break;
       end;
-    CanClose := True;
   end;
 
-  procedure TfMain.FormCreate(Sender: TObject);
+  function TfMain.GetActiveEditor: TEditorTabSheet;
   begin
-    try
-       // Загружаем SQL-курсор
-      Screen.Cursors[crSQLWait] := LoadCursor(HInstance, 'CUR_SQLWAIT');
-       // Настраиваем Application
-      Application.OnHint     := AppHint;
-      Application.OnActivate := AppActivate;
-       // Инициализируем tvNav
-      tvNav.NodeDataSize := SizeOf(TNavRecord);
-       // Создаём поток сканирования исходников
-      FScanThread := TSourceScanThread.Create(Self);
-       // Создаём поток компиляции
-      FCompileThread := TCompileThread.Create(Self);
-      LoadSettings;
-    finally
-      SetStatusInfo('');
-    end;
-  end;
-
-  procedure TfMain.FormDestroy(Sender: TObject);
-  begin
-    SaveSettings;
-    FScanThread.Shutdown;
-    FCompileThread.Shutdown;
-    fMain := nil;
-    StopReadingGUIDs;
+    Result := TEditorTabSheet(pcMain.ActivePage);
   end;
 
   function TfMain.GetObjectType: TCodeObjType;
@@ -719,7 +786,6 @@ uses
     rif: TRegIniFile;
     i: Integer;
     s, sActiveFile, sAttrSect: String;
-    co: TCodeObjType;
 
     procedure ChkOpt(const sOptName: String; opt: TSynEditorOption);
     begin
@@ -810,7 +876,7 @@ uses
       finally
         SL.Free;
       end;
-      if idxActivePage<pcMain.PageCount then pcMain.ActivePageIndex := idxActivePage;
+      if idxActivePage<pcMain.PageCount then ActiveEditor := TEditorTabSheet(pcMain.Pages[idxActivePage]);
     end;
 
     procedure ProcessCommandLine;
@@ -861,6 +927,8 @@ uses
         bAutoloadStatus     := ReadBool   (SRegEditor,      'AutoloadStatus',     True);
         bShowNavHints       := ReadBool   (SRegEditor,      'ShowNavHints',       True);
         UpdateNavStyles;
+        bMultilineTabs      := ReadBool   (SRegEditor,      'MultilineTabs',      True);
+        UpdateTabStyles;
         // Read Editor settings
         bUpperKwds          := ReadBool   (SRegEditor,      'UpperKwds',          False);
         sEdFontName         := ReadString (SRegEditor,      'EdFontName',         'Courier New');
@@ -897,7 +965,6 @@ uses
          // Read key bindings
         ReadKeyBindings; 
          // Read other settings
-        co     := TCodeObjType(ReadInteger(SRegPreferences, 'ObjType',            Byte(coPackage)));
         sbarMain.Visible    := ReadBool   (SRegPreferences, 'ShowStatusbar',      True);
         sHistTxSrch         := ReadString (SRegPreferences, 'SearchHistory',      '');
         sHistTxRepl         := ReadString (SRegPreferences, 'ReplaceHistory',     '');
@@ -921,11 +988,6 @@ uses
         for i := 0 to pcMain.PageCount-1 do TEditorTabSheet(pcMain.Pages[i]).LoadResults(True);
     end else
       UpdateStatusbar;
-     // Если не загружено ни одного файла, создаём пустой редактор
-    if pcMain.PageCount=0 then NewObject(co);
-    pcMainChange(nil);
-     // Начинаем сканирование GUID реестра [защита]
-    StartReadingGUIDs;
   end;
 
   procedure TfMain.LocateCurrentNavObject;
@@ -952,7 +1014,7 @@ uses
     if n<>nil then begin
       p := ActiveEditor.StatusEntries[n.Index];
       case p.SKind of
-        skUnknown: aRefreshStatus.Execute;
+        skUnknown: aObjectRefreshStatus.Execute;
         skError: begin
           bBody := p.sPart='PACKAGE BODY';
           ActiveEditor.LocateEditors(
@@ -976,8 +1038,8 @@ uses
      // Создаём страницу
     Result := TEditorTabSheet.Create(pcMain, bIsDefaultPage, co, sFileName, sObjName, sText, sBodyText, dtFileDate);
      // Активизируем её
-    pcMain.ActivePage := Result;
-    pcMainChange(nil);
+    ActiveEditor := Result;
+    PostWindowListChanged;
   end;
 
   function TfMain.NewObject(co: TCodeObjType): TEditorTabSheet;
@@ -990,6 +1052,17 @@ uses
       StringReplace(ConvertKwd(aCOT[co].pcTemplate), '%', '<noname>', [rfReplaceAll]),
       ConvertKwd('PACKAGE BODY ')+'<noname>'+ConvertKwd(' IS'#13'  ...'#13'END;'),
       0);
+  end;
+
+  procedure TfMain.NewObjectClick(Sender: TObject);
+  begin
+    NewObject(TCodeObjType(TComponent(Sender).Tag));
+  end;
+
+  procedure TfMain.OpenFilesFromList(AFiles: TStrings);
+  var i: Integer;
+  begin
+    for i := 0 to AFiles.Count-1 do DoLoad(AFiles[i]);
   end;
 
   function TfMain.OpenSQL(const sSQL: String; const aParams: array of const): TOraQuery;
@@ -1052,29 +1125,33 @@ uses
   end;
 
   procedure TfMain.pcMainChange(Sender: TObject);
-  var ets: TEditorTabSheet;
   begin
-    UpdateCaption;
-    EnableActions;
-    ets := ActiveEditor;
-    if ets<>nil then
-      with ets do begin
-        ObjectType := ObjType;
-        eObjName.Text := ObjectName;
-        EditorActivate;
-      end;
-    UpdateStatusList;
-     // Пишем сообщение 'Scanning source...' в tvNav
-    tvNav.Clear;
-    tvNav.AddChild(nil);
-     // Запускаем сканирующий поток
-    FScanThread.SetModified(10);
-    bChangingPages := False;
+    ActiveEditorChanged;
   end;
 
   procedure TfMain.pcMainChanging(Sender: TObject; var AllowChange: Boolean);
   begin
     bChangingPages := True;
+  end;
+
+  procedure TfMain.pcMainMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+  var iTabIndex: Integer;
+  begin
+    iTabIndex := pcMain.IndexOfTabAt(x, y);
+    if iTabIndex>=0 then begin
+      ActiveEditor := TEditorTabSheet(pcMain.Pages[iTabIndex]);
+      if Button=mbMiddle then aWindowClose.Execute;
+    end;
+  end;
+
+  procedure TfMain.PostActiveWindowChanged;
+  begin
+    PostMessage(Handle, WM_ActiveWindowChanged, 0, 0);
+  end;
+
+  procedure TfMain.PostWindowListChanged;
+  begin
+    PostMessage(Handle, WM_WindowListChanged, 0, 0);
   end;
 
   procedure TfMain.SaveSettings;
@@ -1163,6 +1240,7 @@ uses
         WriteBool   (SRegEditor,      'RestoreDesktop',     bRestoreDesktop);
         WriteBool   (SRegEditor,      'AutoloadStatus',     bAutoloadStatus);
         WriteBool   (SRegEditor,      'ShowNavHints',       bShowNavHints);
+        WriteBool   (SRegEditor,      'MultilineTabs',      bMultilineTabs);
          // Write Editor settings
         WriteBool   (SRegEditor,      'UpperKwds',          bUpperKwds);
         WriteString (SRegEditor,      'EdFontName',         sEdFontName);
@@ -1183,7 +1261,6 @@ uses
         WriteBool   (SRegEditor,      'GroupUndo',          eoGroupUndo          in SynEditOpts);
         WriteBool   (SRegEditor,      'WantTabs',           bWantTabs);
          // Прочие настройки
-        WriteInteger(SRegPreferences, 'ObjType',            Byte(ObjectType));
         WriteBool   (SRegPreferences, 'ShowStatusbar',      sbarMain.Visible);
         WriteString (SRegPreferences, 'SearchHistory',      sHistTxSrch);
         WriteString (SRegPreferences, 'ReplaceHistory',     sHistTxRepl);
@@ -1204,15 +1281,20 @@ uses
   procedure TfMain.sbarMainPanelDblClick(Sender: TTBXCustomStatusBar; Panel: TTBXStatusPanel);
   begin
     if Panel.Index=0 then
-      if osMain.Connected then aDisconnect.Execute else aConnect.Execute;
+      if osMain.Connected then aFileDisconnect.Execute else aFileConnect.Execute;
   end;
 
-  procedure TfMain.SetCompilingEditor(const Value: TEditorTabSheet);
-  const aCursors: Array[Boolean] of TCursor = (crDefault, crAppStart);
+  procedure TfMain.SetActiveEditor(Value: TEditorTabSheet);
+  begin
+    pcMain.ActivePage := Value;
+    if Visible then ActiveEditorChanged;
+  end;
+
+  procedure TfMain.SetCompilingEditor(Value: TEditorTabSheet);
   begin
     if FCompilingEditor<>Value then begin
       FCompilingEditor := Value;
-      Screen.Cursor := aCursors[Value<>nil];
+      Screen.Cursor := iif(Value=nil, crDefault, crAppStart);
       UpdateStatusList;
       EnableActions;
       tvResults.Color := iif(Value=nil, clWindow, CResultList_BackWorking);
@@ -1224,7 +1306,7 @@ uses
   procedure TfMain.SetObjectType(Value: TCodeObjType);
   begin
     if Value=coNone then raise Exception.Create('Invalid code object type in SetObjectType()');
-    tbsmObjType.Caption := aCOT[Value].sName;
+    tbsmObjType.Caption    := aCOT[Value].sName;
     tbsmObjType.ImageIndex := aCOT[Value].ii;
     if (Value<>GetObjectType) and (ActiveEditor<>nil) then ActiveEditor.ObjType := Value;
   end;
@@ -1422,21 +1504,8 @@ uses
           end;
   end;
 
-  procedure TfMain.UpdateCaption;
-  var
-    ed: TEditorTabSheet;
-    s: String;
-  begin
-    ed := ActiveEditor;
-    if ed=nil then s := SApp_FullName else s := Format('[%s] - %s', [ed.Caption, SApp_FullName]);
-    if Caption<>s then begin
-      Caption := s;
-      Application.Title := Caption;
-    end;
-  end;
-
   procedure TfMain.UpdateCaretText;
-  const asMacroState: Array[TSynMacroState] of String[9] = ('', 'Recording', 'Playing', 'Paused');
+  const asMacroState: Array[TSynMacroState] of String = ('', 'Recording', 'Playing', 'Paused');
   var
     c: TWinControl;
     s: String;
@@ -1486,23 +1555,39 @@ uses
     for i := 0 to pcMain.PageCount-1 do TEditorTabSheet(pcMain.Pages[i]).UpdateSynEditStyles;
   end;
 
-  procedure TfMain.WMEnableActions(var Msg: TMessage);
+  procedure TfMain.UpdateTabStyles;
+  begin
+    pcMain.MultiLine := bMultilineTabs;
+  end;
+
+  procedure TfMain.WindowItemClick(Sender: TObject);
+  begin
+    ActiveEditor := TEditorTabSheet((Sender as TComponent).Tag);
+  end;
+
+  procedure TfMain.WMActiveWindowChanged(var Msg: TMessage);
+  var
+    i: Integer;
+    tbi: TTBCustomItem;
+    sCaption, sActiveEditorCaption: String;
+  begin
+     // Проставляем активность окна
+    for i := 0 to giWindowList.Count-1 do begin
+      tbi := giWindowList[i];
+       // В Tag пункта лежит ссылка на страницу-редактор
+      tbi.Checked := tbi.Tag=Integer(pcMain.ActivePage);
+    end;
+     // Обновляем заголовок
+    if ActiveEditor=nil then sActiveEditorCaption := '' else sActiveEditorCaption := ActiveEditor.Caption;
+    sCaption := Format(iif(sActiveEditorCaption='', '%1:s', '[%0:s] - %1:s'), [sActiveEditorCaption, SApp_FullName]);
+    Caption           := sCaption;
+    Application.Title := sCaption;
+  end;
+
+  procedure TfMain.WMEditorStatusChanged(var Msg: TMessage);
   begin
     EnableActions;
-  end;
-
-  procedure TfMain.WMTimer(var Msg: TWMTimer);
-  begin
-     // Таймер, сигнализирующий, что GUID из реестра считаны
-    if Msg.TimerID=IGUIDThreadFinishedTimerID then begin
-      KillTimer(Handle, IGUIDThreadFinishedTimerID);
-      FGUIDsLoaded := True;
-    end;
-  end;
-
-  procedure TfMain.WMUpdateCaption(var Msg: TMessage);
-  begin
-    UpdateCaption;
+    PostWindowListChanged; // По идее, здесь только нужно отрабатывать изменение заголовка редактора (Modified) 
   end;
 
   procedure TfMain.WMUpdateStatusList(var Msg: TMessage);
@@ -1510,16 +1595,42 @@ uses
     UpdateStatusList;
   end;
 
-  procedure TfMain.WMUpdateTabNames(var Msg: TMessage);
-  var i: Integer;
+  procedure TfMain.WMWindowListChanged(var Msg: TMessage);
+  var
+    i: Integer;
+    EdTS: TEditorTabSheet;
+    tbi: TTBCustomItem;
+    SLFiles: TStringList;
   begin
-    for i := 0 to pcMain.PageCount-1 do TEditorTabSheet(pcMain.Pages[i]).UpdateTabName;
-    UpdateCaption;
-  end;
-
-  procedure TfMain.zzNewObject(Sender: TObject);
-  begin
-    NewObject(TCodeObjType(TComponent(Sender).Tag));
+     // Обновляем вкладки, создаём сортированный список файлов
+    SLFiles := TStringList.Create;
+    try
+      SLFiles.Sorted     := True;
+      SLFiles.Duplicates := dupAccept;
+      for i := 0 to pcMain.PageCount-1 do begin
+        EdTS := TEditorTabSheet(pcMain.Pages[i]);
+        EdTS.UpdateTabName;
+        SLFiles.AddObject(EdTS.Caption, EdTS);
+      end;
+       // Обновляем меню Window
+      giWindowList.Clear;
+      for i := 0 to SLFiles.Count-1 do begin
+        EdTS := TEditorTabSheet(SLFiles.Objects[i]);
+         // Добавляем пункт в меню Window
+        tbi := TTBXItem.Create(Self);
+        tbi.Caption    := SLFiles[i];
+        tbi.Hint       := EdTS.FileName;
+        tbi.ImageIndex := EdTS.ImageIndex;
+        tbi.Tag        := Integer(EdTS);
+        tbi.OnClick    := WindowItemClick;
+        tbi.RadioItem  := True;
+        giWindowList.Add(tbi);
+      end;
+    finally
+      SLFiles.Free;
+    end;
+     // Обновляем активность окна
+    PostActiveWindowChanged;
   end;
 
 end.

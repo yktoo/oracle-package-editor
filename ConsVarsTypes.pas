@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: ConsVarsTypes.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: ConsVarsTypes.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit ConsVarsTypes;
 
@@ -195,9 +195,8 @@ type
   end;
 
 const
-
   SApp_Name                    = 'PackageEditor';
-  SApp_Version                 = '3.01RC2';
+  SApp_Version                 = '3.01RC3';
   SApp_FullName                = SApp_Name+' '+SApp_Version;
 
    // Пути в реестре
@@ -261,10 +260,10 @@ const
     (sName: 'PACKAGE';   pcTemplate: 'PACKAGE % IS'#13'  ...'#13'END;';                            ii: iiPackage),
     (sName: 'PROCEDURE'; pcTemplate: 'PROCEDURE %() IS'#13'BEGIN'#13'  ...'#13'END;';              ii: iiProcedure));
 
-  WM_UPDATECAPTION             = WM_USER+10;
-  WM_ENABLEACTIONS             = WM_USER+11;
-  WM_UPDATETABNAMES            = WM_USER+12;
-  WM_UPDATESTATUSLIST          = WM_USER+13;
+  WM_EditorStatusChanged       = WM_USER+11; // Вызывается при изменении состояния активного редактора
+  WM_WindowListChanged         = WM_USER+12; // Вызывается при изменении списка и/или заголовков окон
+  WM_ActiveWindowChanged       = WM_USER+13; // Вызывается при смене активного окна
+  WM_UpdateStatusList          = WM_USER+14;
 
    // Цвета
   CNavList_FontScanning        = clGrayText; // Цвет шрифта надписи 'Scanning source...' в списке навигации
@@ -336,6 +335,7 @@ var
   bRestoreDesktop:   Boolean;            // True, если восстанавливать последние редактировавшиеся файлы при запуске
   bAutoloadStatus:   Boolean;            // True, если автоматически загружать статус для открываемых при старте файлов
   bShowNavHints:     Boolean;            // True, если отображать аргументы процедуры/функции во всплывающих подсказках Навигатора
+  bMultilineTabs:    Boolean;            // True, если вкладки многострочные 
   SynEditKeyStrokes: TSynEditKeyStrokes; // Настройки клавиш
    // Текущие настройки поиска
   sTxSearch:         String;             // Строка поиска

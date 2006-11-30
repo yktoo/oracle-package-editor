@@ -15,8 +15,6 @@ object dAbout: TdAbout
   Position = poScreenCenter
   Scaled = False
   ShowHint = True
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13

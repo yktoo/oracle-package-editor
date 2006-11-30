@@ -13,8 +13,6 @@ object dPreferences: TdPreferences
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   DesignSize = (
     324
     373)
@@ -49,20 +47,17 @@ object dPreferences: TdPreferences
     Top = 8
     Width = 312
     Height = 325
-    ActivePage = tsEditor
+    ActivePage = tsLogin
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 0
     object tsLogin: TTabSheet
       Caption = 'Login'
       object lSecureWarning: TLabel
-        Left = 23
+        Left = 11
         Top = 224
-        Width = 259
-        Height = 26
-        Caption = 
-          'WARNING: storing password here is insecure because it can be dec' +
-          'rypted!'
-        WordWrap = True
+        Width = 265
+        Height = 13
+        Caption = 'WARNING: storing passwords here is a security threat!'
       end
       inline frConnect: TfrConnect
         Left = 8
@@ -75,19 +70,23 @@ object dPreferences: TdPreferences
     object tsGeneral: TTabSheet
       Caption = 'General'
       ImageIndex = 4
+      DesignSize = (
+        304
+        297)
       object lTheme: TLabel
         Left = 8
         Top = 100
         Width = 64
         Height = 13
-        Caption = '&Visual theme:'
+        Caption = 'Visual t&heme:'
         FocusControl = cbTheme
       end
       object cbAutoSave: TCheckBox
         Left = 8
         Top = 28
-        Width = 177
+        Width = 289
         Height = 17
+        Anchors = [akLeft, akTop, akRight]
         Caption = 'Autosa&ve file before compilation'
         TabOrder = 1
         OnClick = AdjustOKCancel
@@ -95,8 +94,9 @@ object dPreferences: TdPreferences
       object cbRestoreDesktop: TCheckBox
         Left = 8
         Top = 48
-        Width = 177
+        Width = 289
         Height = 17
+        Anchors = [akLeft, akTop, akRight]
         Caption = 'Op&en last edited files on startup'
         TabOrder = 2
         OnClick = cbRestoreDesktopClick
@@ -104,8 +104,9 @@ object dPreferences: TdPreferences
       object cbAutoloadStatus: TCheckBox
         Left = 24
         Top = 68
-        Width = 185
+        Width = 273
         Height = 17
+        Anchors = [akLeft, akTop, akRight]
         Caption = '&Load status of objects being open'
         TabOrder = 3
         OnClick = AdjustOKCancel
@@ -123,8 +124,9 @@ object dPreferences: TdPreferences
       object cbAutoLogin: TCheckBox
         Left = 8
         Top = 8
-        Width = 165
+        Width = 289
         Height = 17
+        Anchors = [akLeft, akTop, akRight]
         Caption = '&Automatically login on startup'
         TabOrder = 0
         OnClick = AdjustOKCancel
@@ -132,10 +134,21 @@ object dPreferences: TdPreferences
       object cbShowNavHints: TCheckBox
         Left = 8
         Top = 148
-        Width = 277
+        Width = 289
         Height = 17
+        Anchors = [akLeft, akTop, akRight]
         Caption = 'Sho&w proc/func arguments as Navigation pane hints'
         TabOrder = 5
+        OnClick = AdjustOKCancel
+      end
+      object cbMultilineTabs: TCheckBox
+        Left = 8
+        Top = 168
+        Width = 289
+        Height = 17
+        Anchors = [akLeft, akTop, akRight]
+        Caption = 'M&ultiline editor tabs'
+        TabOrder = 6
         OnClick = AdjustOKCancel
       end
     end

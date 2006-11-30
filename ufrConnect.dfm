@@ -85,9 +85,9 @@ object frConnect: TfrConnect
       object lService: TLabel
         Left = 12
         Top = 20
-        Width = 100
+        Width = 83
         Height = 13
-        Caption = 'Oracle NET8 &service:'
+        Caption = 'SQL*Net &service:'
         FocusControl = eService
       end
       object lServer: TLabel

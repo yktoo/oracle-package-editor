@@ -1,6 +1,6 @@
 object fMain: TfMain
-  Left = 557
-  Top = 445
+  Left = 349
+  Top = 232
   AutoScroll = False
   Caption = 'PackageEditor'
   ClientHeight = 374
@@ -17,8 +17,6 @@ object fMain: TfMain
   Scaled = False
   ShowHint = True
   OnCloseQuery = FormCloseQuery
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object pcMain: TPageControl
@@ -33,6 +31,7 @@ object fMain: TfMain
     TabOrder = 0
     OnChange = pcMainChange
     OnChanging = pcMainChanging
+    OnMouseDown = pcMainMouseDown
   end
   object dkTop: TTBXDock
     Left = 0
@@ -65,7 +64,7 @@ object fMain: TfMain
             HelpContext = 301
             Hint = 'Create new FUNCTION object'
             ImageIndex = 2
-            OnClick = zzNewObject
+            OnClick = NewObjectClick
           end
           object iFileNewPackage: TTBXItem
             Tag = 2
@@ -73,7 +72,7 @@ object fMain: TfMain
             HelpContext = 301
             Hint = 'Create new PACKAGE object'
             ImageIndex = 3
-            OnClick = zzNewObject
+            OnClick = NewObjectClick
           end
           object iFileNewProcedure: TTBXItem
             Tag = 3
@@ -81,35 +80,32 @@ object fMain: TfMain
             HelpContext = 301
             Hint = 'Create new PROCEDURE object'
             ImageIndex = 4
-            OnClick = zzNewObject
+            OnClick = NewObjectClick
           end
         end
-        object iOpen: TTBXItem
-          Action = aOpen
+        object iFileOpen: TTBXItem
+          Action = aFileOpen
         end
-        object iSave: TTBXItem
-          Action = aSave
+        object iFileSave: TTBXItem
+          Action = aFileSave
         end
-        object iSaveAs: TTBXItem
-          Action = aSaveAs
+        object iFileSaveAs: TTBXItem
+          Action = aFileSaveAs
         end
-        object iCloseFile: TTBXItem
-          Action = aCloseFile
+        object iSepFileDisconnect: TTBXSeparatorItem
         end
-        object iFileSep1: TTBXSeparatorItem
+        object iFileDisconnect: TTBXItem
+          Action = aFileDisconnect
         end
-        object iDisconnect: TTBXItem
-          Action = aDisconnect
+        object iFileConnect: TTBXItem
+          Action = aFileConnect
         end
-        object iConnect: TTBXItem
-          Action = aConnect
+        object iSepFileExit: TTBXSeparatorItem
         end
-        object iFileSep2: TTBXSeparatorItem
+        object iFileExit: TTBXItem
+          Action = aFileExit
         end
-        object iExit: TTBXItem
-          Action = aExit
-        end
-        object iFileSep3: TTBXSeparatorItem
+        object iSepFileMRU: TTBXSeparatorItem
         end
         object iFileMRU: TTBXMRUListItem
           MRUList = tbmruMain
@@ -117,116 +113,128 @@ object fMain: TfMain
       end
       object smEdit: TTBXSubmenuItem
         Caption = '&Edit'
-        object iUndo: TTBXItem
-          Action = aUndo
+        object iEditUndo: TTBXItem
+          Action = aEditUndo
         end
-        object iRedo: TTBXItem
-          Action = aRedo
+        object iEditRedo: TTBXItem
+          Action = aEditRedo
         end
-        object iEditSep1: TTBXSeparatorItem
+        object iSepEditCut: TTBXSeparatorItem
         end
-        object iCut: TTBXItem
-          Action = aCut
+        object iEditCut: TTBXItem
+          Action = aEditCut
         end
-        object iCopy: TTBXItem
-          Action = aCopy
+        object iEditCopy: TTBXItem
+          Action = aEditCopy
         end
-        object iPaste: TTBXItem
-          Action = aPaste
+        object iEditPaste: TTBXItem
+          Action = aEditPaste
         end
-        object iEditSep2: TTBXSeparatorItem
+        object iSepEditFind: TTBXSeparatorItem
         end
-        object iFind: TTBXItem
-          Action = aFind
+        object iEditFind: TTBXItem
+          Action = aEditFind
         end
-        object iReplace: TTBXItem
-          Action = aReplace
+        object iEditReplace: TTBXItem
+          Action = aEditReplace
         end
-        object iSearchAgain: TTBXItem
-          Action = aSearchAgain
+        object iEditSearchAgain: TTBXItem
+          Action = aEditSearchAgain
         end
-        object iEditSep3: TTBXSeparatorItem
+        object iSepEditKeyMacroRecord: TTBXSeparatorItem
         end
-        object iKeyMacroRecord: TTBXItem
-          Action = aKeyMacroRecord
+        object iEditKeyMacroRecord: TTBXItem
+          Action = aEditKeyMacroRecord
         end
-        object iKeyMacroPause: TTBXItem
-          Action = aKeyMacroPause
+        object iEditKeyMacroPause: TTBXItem
+          Action = aEditKeyMacroPause
         end
-        object iKeyMacroPlay: TTBXItem
-          Action = aKeyMacroPlay
+        object iEditKeyMacroPlay: TTBXItem
+          Action = aEditKeyMacroPlay
         end
       end
       object smView: TTBXSubmenuItem
         Caption = '&View'
-        object iToggleGeneral: TTBVisibilityToggleItem
+        object iViewToggleGeneralToolbar: TTBVisibilityToggleItem
           Caption = '&General toolbar'
           Control = tbMain
           Hint = 'Toggle General toolbar'
         end
-        object iToggleObjProps: TTBVisibilityToggleItem
+        object iViewToggleObjPropsToolbar: TTBVisibilityToggleItem
           Caption = '&Object Properties toolbar'
           Control = tbObject
           Hint = 'Toggle Object Properties toolbar'
         end
-        object iToggleMacro: TTBVisibilityToggleItem
+        object iViewToggleMacroToolbar: TTBVisibilityToggleItem
           Caption = '&Macro toolbar'
           Control = tbMacro
           Hint = 'Toggle Macro toolbar'
         end
-        object iToggleNavList: TTBVisibilityToggleItem
+        object iViewToggleNavList: TTBVisibilityToggleItem
           Caption = '&Navigation List'
           Control = dpNav
           Hint = 'Toggle Navigation List window'
         end
-        object iToggleResults: TTBVisibilityToggleItem
+        object iViewToggleResults: TTBVisibilityToggleItem
           Caption = '&Compilation/Execution Results'
           Control = dpResults
           Hint = 'Toggle Compilation/Execution Results toolbar'
         end
-        object iToggleStatusBar: TTBVisibilityToggleItem
+        object iViewToggleStatusBar: TTBVisibilityToggleItem
           Caption = '&Status bar'
           Control = sbarMain
           Hint = 'Toggle status bar'
         end
-        object iVewSep: TTBXSeparatorItem
+        object iSepViewPreferences: TTBXSeparatorItem
         end
-        object iPreferences: TTBXItem
-          Action = aPreferences
+        object iViewPreferences: TTBXItem
+          Action = aViewPreferences
+        end
+      end
+      object smWindow: TTBXSubmenuItem
+        Caption = '&Window'
+        object iWindowClose: TTBXItem
+          Action = aWindowClose
+        end
+        object iWindowCloseAll: TTBXItem
+          Action = aWindowCloseAll
+        end
+        object iSepWindowList: TTBXSeparatorItem
+        end
+        object giWindowList: TTBGroupItem
         end
       end
       object smObject: TTBXSubmenuItem
         Caption = '&Object'
-        object iCompile: TTBXItem
-          Action = aCompile
+        object iObjectCompile: TTBXItem
+          Action = aObjectCompile
         end
-        object iRetrieveObject: TTBXItem
-          Action = aRetrieveObject
-        end
-        object iDropObject: TTBXItem
-          Action = aDropObject
-        end
-        object iObjectSep1: TTBXSeparatorItem
-        end
-        object iRefreshStatus: TTBXItem
-          Action = aRefreshStatus
+        object iObjectRefreshStatus: TTBXItem
+          Action = aObjectRefreshStatus
           Caption = '&Refresh status'
           Hint = 'Refresh status|Refresh current object'#39's compilation status'
+        end
+        object iObjectDrop: TTBXItem
+          Action = aObjectDrop
+        end
+        object iSepObjectRetrieve: TTBXSeparatorItem
+        end
+        object iObjectRetrieve: TTBXItem
+          Action = aObjectRetrieve
         end
       end
       object smHelp: TTBXSubmenuItem
         Caption = '&Help'
         object iHelpContents: TTBXItem
           Action = aHelpContents
-          ImageIndex = 30
         end
-        object iAbout: TTBXItem
-          Action = aAbout
+        object iHelpAbout: TTBXItem
+          Action = aHelpAbout
         end
       end
     end
     object tbMain: TTBXToolbar
-      Left = 169
+      Left = 217
       Top = 0
       Caption = 'General'
       ChevronHint = 'More Buttons|Show more buttons'
@@ -234,10 +242,10 @@ object fMain: TfMain
       Images = ilMain
       TabOrder = 1
       object bDisconnect: TTBXItem
-        Action = aDisconnect
+        Action = aFileDisconnect
       end
       object bConnect: TTBXItem
-        Action = aConnect
+        Action = aFileConnect
       end
       object tbsMain1: TTBXSeparatorItem
       end
@@ -249,55 +257,55 @@ object fMain: TfMain
         Options = [tboDropdownArrow]
       end
       object bOpen: TTBXSubmenuItem
-        Action = aOpen
+        Action = aFileOpen
         DropdownCombo = True
         object iOpenMRU: TTBXMRUListItem
           MRUList = tbmruMain
         end
       end
       object bSave: TTBXItem
-        Action = aSave
+        Action = aFileSave
       end
       object bSaveAs: TTBXItem
-        Action = aSaveAs
+        Action = aFileSaveAs
       end
       object tbsMain2: TTBXSeparatorItem
       end
       object bUndo: TTBXItem
-        Action = aUndo
+        Action = aEditUndo
       end
       object bRedo: TTBXItem
-        Action = aRedo
+        Action = aEditRedo
       end
       object bCut: TTBXItem
-        Action = aCut
+        Action = aEditCut
       end
       object bCopy: TTBXItem
-        Action = aCopy
+        Action = aEditCopy
       end
       object bPaste: TTBXItem
-        Action = aPaste
+        Action = aEditPaste
       end
       object tbsMain3: TTBXSeparatorItem
       end
       object bFind: TTBXItem
-        Action = aFind
+        Action = aEditFind
       end
       object bReplace: TTBXItem
-        Action = aReplace
+        Action = aEditReplace
       end
       object tbsMain4: TTBXSeparatorItem
       end
       object bCompile: TTBXItem
-        Action = aCompile
+        Action = aObjectCompile
       end
       object bRefreshStatus: TTBXItem
-        Action = aRefreshStatus
+        Action = aObjectRefreshStatus
       end
       object TBSeparatorItem5: TTBXSeparatorItem
       end
       object bExit: TTBXItem
-        Action = aExit
+        Action = aFileExit
       end
     end
     object tbObject: TTBXToolbar
@@ -349,10 +357,10 @@ object fMain: TfMain
         end
       end
       object bRetrieveObject: TTBXItem
-        Action = aRetrieveObject
+        Action = aObjectRetrieve
       end
       object bDropObject: TTBXItem
-        Action = aDropObject
+        Action = aObjectDrop
       end
     end
     object tbMacro: TTBXToolbar
@@ -365,13 +373,13 @@ object fMain: TfMain
       TabOrder = 3
       Visible = False
       object bKeyMacroRecord: TTBXItem
-        Action = aKeyMacroRecord
+        Action = aEditKeyMacroRecord
       end
       object bKeyMacroPause: TTBXItem
-        Action = aKeyMacroPause
+        Action = aEditKeyMacroPause
       end
       object bKeyMacroPlay: TTBXItem
-        Action = aKeyMacroPlay
+        Action = aEditKeyMacroPlay
       end
     end
   end
@@ -534,159 +542,141 @@ object fMain: TfMain
     Images = ilMain
     Left = 216
     Top = 84
-    object aOpen: TAction
+    object aFileOpen: TAction
       Category = 'File'
       Caption = '&Open...'
       HelpContext = 302
       Hint = 'Open|Open existing object script'
       ImageIndex = 10
       ShortCut = 16463
-      OnExecute = aaOpen
+      OnExecute = aaFileOpen
     end
-    object aSave: TAction
+    object aFileSave: TAction
       Category = 'File'
       Caption = '&Save'
       HelpContext = 303
       Hint = 'Save|Save designed object script'
       ImageIndex = 11
       ShortCut = 16467
-      OnExecute = aaSave
+      OnExecute = aaFileSave
     end
-    object aSaveAs: TAction
+    object aFileSaveAs: TAction
       Category = 'File'
       Caption = 'Save &As...'
       HelpContext = 304
       Hint = 'Save as|Save designed object script as'
       ImageIndex = 12
       ShortCut = 123
-      OnExecute = aaSaveAs
+      OnExecute = aaFileSaveAs
     end
-    object aCloseFile: TAction
-      Category = 'File'
-      Caption = 'Close'
+    object aWindowClose: TAction
+      Category = 'Window'
+      Caption = '&Close'
       HelpContext = 305
-      Hint = 'Close|Close current file'
+      Hint = 'Close|Close current editor window'
       ImageIndex = 13
       ShortCut = 16499
       SecondaryShortCuts.Strings = (
         'Ctrl+W')
-      OnExecute = aaCloseFile
+      OnExecute = aaWindowClose
     end
-    object aDisconnect: TAction
+    object aFileDisconnect: TAction
       Category = 'File'
       Caption = 'D&isconnec&t from server'
       HelpContext = 306
       Hint = 'Disconnect|Break current connection with server'
       ImageIndex = 21
-      OnExecute = aaDisconnect
+      OnExecute = aaFileDisconnect
     end
-    object aConnect: TAction
+    object aFileConnect: TAction
       Category = 'File'
       Caption = 'Connec&t to server...'
       HelpContext = 307
       Hint = 'Connect|Establish connection with server'
       ImageIndex = 20
-      OnExecute = aaConnect
+      OnExecute = aaFileConnect
     end
-    object aRetrieveObject: TAction
+    object aObjectRetrieve: TAction
       Category = 'Object'
       Caption = '&Retrieve object...'
       HelpContext = 308
       Hint = 'Retrieve object...|Retrieve object script text from server'
       ImageIndex = 22
       ShortCut = 16466
-      OnExecute = aaRetrieveObject
+      OnExecute = aaObjectRetrieve
     end
-    object aDropObject: TAction
-      Category = 'Object'
-      Caption = '&Drop object'
-      HelpContext = 309
-      Hint = 'Drop object|Drop current object from server'
-      ImageIndex = 14
-      ShortCut = 41006
-      OnExecute = aaDropObject
-    end
-    object aExit: TAction
+    object aFileExit: TAction
       Category = 'File'
       Caption = 'E&xit'
       HelpContext = 310
       Hint = 'Exit|Exit from PackageEditor'
       ImageIndex = 23
-      OnExecute = aaExit
+      OnExecute = aaFileExit
     end
-    object aUndo: TAction
+    object aEditUndo: TAction
       Category = 'Edit'
       Caption = '&Undo'
       HelpContext = 503
       Hint = 'Undo|Undo last change'
       ImageIndex = 18
       ShortCut = 16474
-      OnExecute = aaUndo
+      OnExecute = aaEditUndo
     end
-    object aRedo: TAction
+    object aEditRedo: TAction
       Category = 'Edit'
       Caption = '&Redo'
       HelpContext = 402
       Hint = 'Redo|Redo undone change'
       ImageIndex = 19
       ShortCut = 40968
-      OnExecute = aaRedo
+      OnExecute = aaEditRedo
     end
-    object aCut: TAction
+    object aEditCut: TAction
       Category = 'Edit'
       Caption = 'Cu&t'
       HelpContext = 403
       Hint = 'Cut|Cut selected text to clipboard'
       ImageIndex = 15
       ShortCut = 16472
-      OnExecute = aaCut
+      OnExecute = aaEditCut
     end
-    object aCopy: TAction
+    object aEditCopy: TAction
       Category = 'Edit'
       Caption = '&Copy'
       HelpContext = 308
       Hint = 'Copy|Copy selected text to clipboard'
       ImageIndex = 16
       ShortCut = 16451
-      OnExecute = aaCopy
+      OnExecute = aaEditCopy
     end
-    object aPaste: TAction
+    object aEditPaste: TAction
       Category = 'Edit'
       Caption = '&Paste'
       HelpContext = 405
       Hint = 'Paste|Paste text from clipboard'
       ImageIndex = 17
       ShortCut = 16470
-      OnExecute = aaPaste
+      OnExecute = aaEditPaste
     end
-    object aCompile: TAction
+    object aObjectCompile: TAction
       Category = 'Object'
       Caption = '&Compile object'
       HelpContext = 601
       Hint = 'Compile|Compile current object'
       ImageIndex = 27
       ShortCut = 120
-      OnExecute = aaCompile
+      OnExecute = aaObjectCompile
     end
-    object aAbout: TAction
-      Category = 'Help'
-      Caption = '&About PackageEditor...'
-      HelpContext = 702
-      Hint = 'About|Copyright and version information on PackageEditor'
-      ImageIndex = 29
-      ShortCut = 16496
-      OnExecute = aaAbout
-    end
-    object aFind: TAction
+    object aEditFind: TAction
       Category = 'Edit'
       Caption = '&Find...'
       HelpContext = 406
       Hint = 'Find|Searches the text for specified string'
       ImageIndex = 24
       ShortCut = 16454
-      OnExecute = aaFind
+      OnExecute = aaEditFind
     end
-    object aReplace: TAction
+    object aEditReplace: TAction
       Category = 'Edit'
       Caption = '&Replace...'
       HelpContext = 407
@@ -695,44 +685,62 @@ object fMain: TfMain
         ' another'
       ImageIndex = 25
       ShortCut = 16456
-      OnExecute = aaReplace
+      OnExecute = aaEditReplace
     end
-    object aSearchAgain: TAction
+    object aEditSearchAgain: TAction
       Category = 'Edit'
       Caption = 'Search &again'
       Hint = 'Search again|Repeat last search'
       ImageIndex = 26
       ShortCut = 114
-      OnExecute = aaSearchAgain
+      OnExecute = aaEditSearchAgain
     end
-    object aPreferences: TAction
+    object aViewPreferences: TAction
       Category = 'View'
       Caption = 'Pro&gram preferences...'
       HelpContext = 504
       Hint = 'Preferences|View/modify program settings'
       ImageIndex = 28
       ShortCut = 115
-      OnExecute = aaPreferences
+      OnExecute = aaViewPreferences
     end
-    object aRefreshStatus: TAction
+    object aObjectRefreshStatus: TAction
       Category = 'Object'
       Caption = '&Refresh results'
       HelpContext = 505
       Hint = 'Refresh compilation status|Refresh compilation results'
       ImageIndex = 31
       ShortCut = 116
-      OnExecute = aaRefreshStatus
+      OnExecute = aaObjectRefreshStatus
+    end
+    object aObjectDrop: TAction
+      Category = 'Object'
+      Caption = '&Drop object'
+      HelpContext = 309
+      Hint = 'Drop object|Drop current object from server'
+      ImageIndex = 14
+      ShortCut = 41006
+      OnExecute = aaObjectDrop
     end
     object aHelpContents: TAction
       Category = 'Help'
       Caption = '&Contents'
       HelpContext = 701
       Hint = 'Help|Display help contents'
-      ImageIndex = 29
+      ImageIndex = 30
       ShortCut = 112
       OnExecute = aaHelpContents
     end
-    object aKeyMacroRecord: TAction
+    object aHelpAbout: TAction
+      Category = 'Help'
+      Caption = '&About PackageEditor...'
+      HelpContext = 702
+      Hint = 'About|Copyright and version information on PackageEditor'
+      ImageIndex = 29
+      ShortCut = 16496
+      OnExecute = aaHelpAbout
+    end
+    object aEditKeyMacroRecord: TAction
       Category = 'Edit'
       Caption = 'Record/Stop recording keyboard &macro'
       Hint = 
@@ -740,17 +748,17 @@ object fMain: TfMain
         'keystrokes in the current editor'
       ImageIndex = 32
       ShortCut = 24658
-      OnExecute = aaKeyMacroRecord
+      OnExecute = aaEditKeyMacroRecord
     end
-    object aKeyMacroPause: TAction
+    object aEditKeyMacroPause: TAction
       Category = 'Edit'
       Caption = 'Pa&use keyboard macro recording'
       Hint = 'Pause keyboard macro recording'
       ImageIndex = 33
       ShortCut = 24661
-      OnExecute = aaKeyMacroPause
+      OnExecute = aaEditKeyMacroPause
     end
-    object aKeyMacroPlay: TAction
+    object aEditKeyMacroPlay: TAction
       Category = 'Edit'
       Caption = 'Pla&y keyboard macro'
       Hint = 
@@ -758,7 +766,14 @@ object fMain: TfMain
         'itor'
       ImageIndex = 34
       ShortCut = 24656
-      OnExecute = aaKeyMacroPlay
+      OnExecute = aaEditKeyMacroPlay
+    end
+    object aWindowCloseAll: TAction
+      Category = 'Window'
+      Caption = 'Close &all'
+      Hint = 'Close all|Close all open editor windows'
+      ShortCut = 24691
+      OnExecute = aaWindowCloseAll
     end
   end
   object shSQL: TSynSQLSyn
@@ -1662,21 +1677,8 @@ object fMain: TfMain
     Images = ilMain
     Left = 168
     Top = 220
-    object ipmTabCloseFile: TTBXItem
-      Action = aCloseFile
-    end
-    object ipmTabSep1: TTBXSeparatorItem
-    end
-    object ipmTabRetrieveObject: TTBXItem
-      Action = aRetrieveObject
-    end
-    object ipmTabDropObject: TTBXItem
-      Action = aDropObject
-    end
-    object ipmTabSep2: TTBXSeparatorItem
-    end
-    object tbgiTabObjName: TTBGroupItem
-      LinkSubitems = tbgiObjName
+    object ipmTabWindowClose: TTBXItem
+      Action = aWindowClose
     end
   end
   object smrMain: TSynMacroRecorder

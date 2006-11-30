@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: udAbout.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: udAbout.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit udAbout;
 
@@ -22,8 +22,6 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure lWebLinkClick(Sender: TObject);
     procedure lCloseLinkClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
   private
     FUserHideable: Boolean;
     procedure WMNCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
@@ -32,6 +30,9 @@ type
      // Prop handlers
     function  GetStatus: String;
     procedure SetStatus(const Value: String);
+  protected
+    procedure DoCreate; override;
+    procedure DoDestroy; override;
   public
      // Props
      // -- Текущий отображаемый статус
@@ -87,15 +88,17 @@ var
     end;
   end;
 
-  procedure TdAbout.FormCreate(Sender: TObject);
+  procedure TdAbout.DoCreate;
   begin
+    inherited DoCreate;
     dAbout := Self;
     lVersion.Caption := SApp_Version;
   end;
 
-  procedure TdAbout.FormDestroy(Sender: TObject);
+  procedure TdAbout.DoDestroy;
   begin
     dAbout := nil;
+    inherited DoDestroy;
   end;
 
   procedure TdAbout.FormKeyPress(Sender: TObject; var Key: Char);

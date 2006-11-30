@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: udSearch.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: udSearch.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit udSearch;
 
@@ -10,23 +10,23 @@ uses
 
 type
   TdSearch = class(TForm)
-    bOK: TButton;
     bCancel: TButton;
-    pMain: TPanel;
-    lSearchText: TLabel;
-    cbSearchText: TComboBox;
-    gbOptions: TGroupBox;
+    bOK: TButton;
     cbCaseSensitive: TCheckBox;
-    cbWholeWords: TCheckBox;
-    cbSelectedOnly: TCheckBox;
-    rgDirection: TRadioGroup;
-    lReplaceText: TLabel;
-    cbReplaceText: TComboBox;
-    iIcon: TImage;
-    cbReplaceAll: TCheckBox;
-    rgScope: TRadioGroup;
     cbPromptForReplace: TCheckBox;
     cbRegexSearch: TCheckBox;
+    cbReplaceAll: TCheckBox;
+    cbReplaceText: TComboBox;
+    cbSearchText: TComboBox;
+    cbSelectedOnly: TCheckBox;
+    cbWholeWords: TCheckBox;
+    gbOptions: TGroupBox;
+    iIcon: TImage;
+    lReplaceText: TLabel;
+    lSearchText: TLabel;
+    pMain: TPanel;
+    rgDirection: TRadioGroup;
+    rgScope: TRadioGroup;
     procedure bOKClick(Sender: TObject);
   private
     FReplace: Boolean;
@@ -71,6 +71,10 @@ uses ConsVarsTypes;
         Free;
       end;
   end;
+
+   //===================================================================================================================
+   // TdSearch
+   //===================================================================================================================
 
   procedure TdSearch.bOKClick(Sender: TObject);
 

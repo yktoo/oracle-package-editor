@@ -2,11 +2,14 @@ object dRetrieveObject: TdRetrieveObject
   Left = 343
   Top = 199
   ActiveControl = tvMain
-  BorderStyle = bsDialog
+  AutoScroll = False
+  BorderIcons = [biSystemMenu, biMaximize]
   Caption = 'Select an object to retrieve'
-  ClientHeight = 391
-  ClientWidth = 592
+  ClientHeight = 435
+  ClientWidth = 632
   Color = clBtnFace
+  Constraints.MinHeight = 200
+  Constraints.MinWidth = 300
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -19,31 +22,29 @@ object dRetrieveObject: TdRetrieveObject
   object tvMain: TTreeView
     Left = 0
     Top = 29
-    Width = 592
-    Height = 327
+    Width = 632
+    Height = 371
     Align = alClient
-    AutoExpand = True
     HideSelection = False
-    HotTrack = True
     Images = fMain.ilMain
     Indent = 19
     ReadOnly = True
     TabOrder = 0
-    OnClick = bOKClick
+    OnDblClick = bOKClick
   end
   object pBottom: TPanel
     Left = 0
-    Top = 356
-    Width = 592
+    Top = 400
+    Width = 632
     Height = 35
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      592
+      632
       35)
     object bOK: TButton
-      Left = 432
+      Left = 472
       Top = 6
       Width = 75
       Height = 23
@@ -54,7 +55,7 @@ object dRetrieveObject: TdRetrieveObject
       OnClick = bOKClick
     end
     object bCancel: TButton
-      Left = 512
+      Left = 552
       Top = 6
       Width = 75
       Height = 23
@@ -68,7 +69,7 @@ object dRetrieveObject: TdRetrieveObject
   object pTop: TPanel
     Left = 0
     Top = 0
-    Width = 592
+    Width = 632
     Height = 29
     Align = alTop
     BevelOuter = bvNone

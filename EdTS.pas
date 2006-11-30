@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: EdTS.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: EdTS.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit EdTS;
 
@@ -49,11 +49,12 @@ type
      // Снимает подсветку строки с редакторов
     procedure UnhiliteSynEds;
      // События редакторов
+    procedure SynEdDropFiles(Sender: TObject; X, Y: integer; AFiles: TStrings);
     procedure SynEdsChange(Sender: TObject);
     procedure SynEdsEnter(Sender: TObject);
-    procedure SynEdsStatusChange(Sender: TObject; Changes: TSynStatusChanges);
-    procedure SynEdsReplaceText(Sender: TObject; const ASearch, AReplace: String; Line, Column: Integer; var Action: TSynReplaceAction);
     procedure SynEdSpecialLineColors(Sender: TObject; Line: Integer; var Special: Boolean; var FG, BG: TColor);
+    procedure SynEdsReplaceText(Sender: TObject; const ASearch, AReplace: String; Line, Column: Integer; var Action: TSynReplaceAction);
+    procedure SynEdsStatusChange(Sender: TObject; Changes: TSynStatusChanges);
      // Prop handlers
     function  GetModified: Boolean;
     function  GetStatusEntries(Index: Integer): PStatusEntry;
@@ -346,7 +347,7 @@ uses Main, RxStrUtils, DB, OraError, udConfirmReplace, SynMacroRecorder, SynEdit
     if bClear then ClearStatus;
     LoadErrors(aCOT[ObjType].sName);
     if ObjType=coPackage then LoadErrors('PACKAGE BODY');
-    fMain.Perform(WM_UPDATESTATUSLIST, 0, 0);
+    fMain.Perform(WM_UpdateStatusList, 0, 0);
   end;
 
   procedure TEditorTabSheet.LocateEditors(iMainLine, iMainCol, iBodyLine, iBodyCol: Integer; bSetFocus, bHilite: Boolean);
@@ -388,6 +389,7 @@ uses Main, RxStrUtils, DB, OraError, udConfirmReplace, SynMacroRecorder, SynEdit
       PopupMenu           := fMain.tbpmEditor;
       TabOrder            := 0;
       OnChange            := SynEdsChange;
+      OnDropFiles         := SynEdDropFiles;
       OnEnter             := SynEdsEnter;
       OnReplaceText       := SynEdsReplaceText;
       OnStatusChange      := SynEdsStatusChange;
@@ -474,14 +476,14 @@ uses Main, RxStrUtils, DB, OraError, udConfirmReplace, SynMacroRecorder, SynEdit
   begin
     FFileName := Value;
     if Value<>'' then fMain.tbmruMain.Add(Value);
-    fMain.Perform(WM_UPDATETABNAMES, 0, 0);
+    fMain.PostWindowListChanged;
   end;
 
   procedure TEditorTabSheet.SetModified(Value: Boolean);
   begin
     FSynEdMain.Modified := Value;
     if FSynEdBody<>nil then FSynEdBody.Modified := Value;
-    fMain.Perform(WM_UPDATETABNAMES, 0, 0);
+    fMain.PostWindowListChanged;
   end;
 
   procedure TEditorTabSheet.SetObjectName(const Value: String);
@@ -557,6 +559,11 @@ uses Main, RxStrUtils, DB, OraError, udConfirmReplace, SynMacroRecorder, SynEdit
     Modified := bOldModified;
   end;
 
+  procedure TEditorTabSheet.SynEdDropFiles(Sender: TObject; X, Y: integer; AFiles: TStrings);
+  begin
+    fMain.OpenFilesFromList(AFiles);
+  end;
+
   procedure TEditorTabSheet.SynEdsChange(Sender: TObject);
   begin
     fMain.ScanThread.SetModified(1000);
@@ -610,9 +617,8 @@ uses Main, RxStrUtils, DB, OraError, udConfirmReplace, SynMacroRecorder, SynEdit
     if scModified in Changes then begin
       FDefaultPage := False;
       UpdateTabName;
-      fMain.Perform(WM_UPDATECAPTION, 0, 0);
     end;
-    fMain.Perform(WM_ENABLEACTIONS, 0, 0);
+    PostMessage(fMain.Handle, WM_EditorStatusChanged, 0, 0);
   end;
 
   procedure TEditorTabSheet.UnhiliteSynEds;

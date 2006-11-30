@@ -1,12 +1,11 @@
 {****************************************************************
-  $Id: PkgEditr.dpr,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: PkgEditr.dpr,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 program PkgEditr;
 
 uses
   Forms,
   ConsVarsTypes in 'ConsVarsTypes.pas',
-  uProtect in 'uProtect.pas',
   EdTS in 'EdTS.pas',
   Main in 'Main.pas' {fMain},
   udPreferences in 'udPreferences.pas' {dPreferences},

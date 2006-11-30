@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: udConfirmReplace.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: udConfirmReplace.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit udConfirmReplace;
 
@@ -10,13 +10,14 @@ uses
 
 type
   TdConfirmReplace = class(TForm)
-    btnReplace: TButton;
-    lMain: TLabel;
-    btnSkip: TButton;
     btnCancel: TButton;
+    btnReplace: TButton;
     btnReplaceAll: TButton;
+    btnSkip: TButton;
     iIcon: TImage;
-    procedure FormDestroy(Sender: TObject);
+    lMain: TLabel;
+  protected
+    procedure DoDestroy; override;
   end;
 
   function AskConfirmReplace(AEditorRect: TRect; X, Y1, Y2: Integer; const AReplaceText: String): Integer;
@@ -46,9 +47,14 @@ var
     end;
   end;
 
-  procedure TdConfirmReplace.FormDestroy(Sender: TObject);
+   //===================================================================================================================
+   // TdConfirmReplace
+   //===================================================================================================================
+
+  procedure TdConfirmReplace.DoDestroy;
   begin
     dConfirmReplace := nil;
+    inherited DoDestroy;
   end;
 
 end.

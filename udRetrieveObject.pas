@@ -1,5 +1,5 @@
 {****************************************************************
-  $Id: udRetrieveObject.pas,v 1.1 2006-03-07 05:35:48 dale Exp $
+  $Id: udRetrieveObject.pas,v 1.2 2006-11-30 10:30:41 dale Exp $
 ****************************************************************}
 unit udRetrieveObject;
 
@@ -20,7 +20,6 @@ type
     lObjType: TLabel;
     procedure bOKClick(Sender: TObject);
     procedure LoadObjects(Sender: TObject = nil);
-  private
   end;
 
   function RetrieveObject: Boolean;
@@ -43,6 +42,10 @@ uses Main;
         Free;
       end;
   end;
+
+   //===================================================================================================================
+   // TdRetrieveObject
+   //===================================================================================================================
 
   procedure TdRetrieveObject.LoadObjects(Sender: TObject = nil);
   var
