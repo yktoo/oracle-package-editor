@@ -1,0 +1,19 @@
+PakcageEditor
+=============
+
+PackageEditor is a GUI application to edit Oracle PL/SQL packages.
+
+
+Features
+--------
+
+* Can connect to Oracle server either via client software or directly over TCP/IP.
+* Customisable SQL syntax highlighting.
+* Package and package body are displayed in two separate editor windows.
+* Navigation window allows easy navigation within package procedures and functions.
+* Rich editor function support (Search, Replace, Column selection, Keyboard macros, Undo/Redo etc). Editor keyboard bindings can be customised.
+* Object compilation status display, including one-click navigation to the line containing the error.
+* Capable of retrieving object's source code from the Oracle server.
+* Unlimited editor windows simultaneously.
+* Can save all open editors and restore them on next run.
+* Compatible with version control systems (CVS, SVN, git).
